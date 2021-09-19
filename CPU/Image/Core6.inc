@@ -21,10 +21,10 @@ MinValue=0
 MaxValue=100
 
 IfConditionMode=1
-IfCondition=(#CPU_Mode#=1) && (Core6Temp > #CPU_NormTemp#)
-IfTrueAction=!SetOption Core6Image ImageTint "(#Comet_Brightness#*(([Core6Temp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), (#Comet_Brightness#*(1-([Core6Temp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), 0, #Comet_Transparency#"
-IfCondition2=(#CPU_Mode#=1) && (Core6Temp <= #CPU_NormTemp#)
-IfTrueAction2=!SetOption Core6Image ImageTint "0, #Comet_Brightness#, 0, #Comet_Transparency#"
+IfCondition=((#CPU_Mode# = 1) || (#CPU_Mode# = 3)) && (Core6Temp > #CPU_NormTemp#)
+IfTrueAction=[!SetOption Core6Image ColorMatrix1 "(([Core6Temp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption Core6Image ColorMatrix2 "0;(1-([Core6Temp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"]
+IfCondition2=((#CPU_Mode# = 1) || (#CPU_Mode# = 3)) && (Core6Temp <= #CPU_NormTemp#)
+IfTrueAction2=[!SetOption Core6Image ColorMatrix1 "0;0;0;0;0"][!SetOption Core6Image ColorMatrix2 "0;1;0;0;0"]
 
 [Core6T0Usage]
 Measure=Plugin
@@ -50,11 +50,14 @@ MaxValue=100
 
 [Core6Usage]
 Measure=Calc
-Formula=Core6T0Usage+Core6T1Usage
+Formula=(Core6T0Usage+Core6T1Usage)/2
 
 IfConditionMode=1
-IfCondition=#CPU_Mode#=2
-IfTrueAction=!SetOption Core6Image ImageTint "(#Comet_Brightness#*([Core6Usage]-100)/100), (#Comet_Brightness#*([Core6Usage]-100)/100), (#Comet_Brightness#*([Core6Usage]-100)/100), #Comet_Transparency#"
+IfCondition=#CPU_Mode# = 2
+IfTrueAction=[!SetOption Core6Image ColorMatrix1 "([Core6Usage]/100);0;0;0;0"][!SetOption Core6Image ColorMatrix2 "0;([Core6Usage]/100);0;0;0"][!SetOption Core6Image ColorMatrix3 "0;0;([Core6Usage]/100);0;0"]
+;[!SetOption Core6Image ColorMatrix5 "(0.25*[Core6Usage]/100);(0.25*[Core6Usage]/100);(0.25*[Core6Usage])/100);0;1"]
+IfCondition2=#CPU_Mode# = 3
+IfTrueAction2=[!SetOption Core6Image ColorMatrix3 "0;0;([Core6Usage]/100);0;0"][!SetOption Core6Image ColorMatrix5 "(0.125*[Core6Usage]/100);(0.125*[Core6Usage]/100);(0.125*[Core6Usage]/100);0;1"]
 
 ; -------------------------------------- Image -------------------------------------------
 
@@ -62,9 +65,9 @@ IfTrueAction=!SetOption Core6Image ImageTint "(#Comet_Brightness#*([Core6Usage]-
 Meter=Image
 ImageName=#@#Images\core8.png
 X=(293*#scaleX#)
-Y=(141*#scaleY#+1)
-H=(92*#scaleY#)
-Grayscale=#Comet_Grayscale#
+Y=(141*#scaleY#)
+H=(92*#scaleY#+2)
+MeterStyle=CometImageStyle[#CPU_Mode]
 LeftMouseUpAction=[!ToggleMeterGroup Core6][!Redraw]
 LeftMouseDoubleClickAction=["C:\Program Files\Intel\Intel(R) Extreme Tuning Utility\Client\XtuUILauncher.exe"]
 ToolTipTitle=Core 6

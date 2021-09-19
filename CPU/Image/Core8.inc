@@ -21,10 +21,10 @@ MinValue=0
 MaxValue=100
 
 IfConditionMode=1
-IfCondition=(#CPU_Mode#=1) && (Core8Temp > #CPU_NormTemp#)
-IfTrueAction=!SetOption Core8Image ImageTint "(#Comet_Brightness#*(([Core8Temp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), (#Comet_Brightness#*(1-([Core8Temp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), 0, #Comet_Transparency#"
-IfCondition2=(#CPU_Mode#=1) && (Core8Temp <= #CPU_NormTemp#)
-IfTrueAction2=!SetOption Core8Image ImageTint "0, #Comet_Brightness#, 0, #Comet_Transparency#"
+IfCondition=((#CPU_Mode# = 1) || (#CPU_Mode# = 3)) && (Core8Temp > #CPU_NormTemp#)
+IfTrueAction=[!SetOption Core8Image ColorMatrix1 "(([Core8Temp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption Core8Image ColorMatrix2 "0;(1-([Core8Temp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"]
+IfCondition2=((#CPU_Mode# = 1) || (#CPU_Mode# = 3)) && (Core8Temp <= #CPU_NormTemp#)
+IfTrueAction2=[!SetOption Core8Image ColorMatrix1 "0;0;0;0;0"][!SetOption Core8Image ColorMatrix2 "0;1;0;0;0"]
 
 [Core8T0Usage]
 Measure=Plugin
@@ -50,11 +50,14 @@ MaxValue=100
 
 [Core8Usage]
 Measure=Calc
-Formula=Core8T0Usage+Core8T1Usage
+Formula=(Core8T0Usage+Core8T1Usage)/2
 
 IfConditionMode=1
-IfCondition=#CPU_Mode#=2
-IfTrueAction=!SetOption Core8Image ImageTint "(#Comet_Brightness#*([Core8Usage]-100)/100), (#Comet_Brightness#*([Core8Usage]-100)/100), (#Comet_Brightness#*([Core8Usage]-100)/100), #Comet_Transparency#"
+IfCondition=#CPU_Mode# = 2
+IfTrueAction=[!SetOption Core8Image ColorMatrix1 "([Core8Usage]/100);0;0;0;0"][!SetOption Core8Image ColorMatrix2 "0;([Core8Usage]/100);0;0;0"][!SetOption Core8Image ColorMatrix3 "0;0;([Core8Usage]/100);0;0"]
+;[!SetOption Core8Image ColorMatrix5 "(0.25*[Core8Usage]/100);(0.25*[Core8Usage]/100);(0.25*[Core8Usage])/100);0;1"]
+IfCondition2=#CPU_Mode# = 3
+IfTrueAction2=[!SetOption Core8Image ColorMatrix3 "0;0;([Core8Usage]/100);0;0"][!SetOption Core8Image ColorMatrix5 "(0.125*[Core8Usage]/100);(0.125*[Core8Usage]/100);(0.125*[Core8Usage]/100);0;1"]
 
 ; -------------------------------------- Image -------------------------------------------
 
@@ -64,7 +67,7 @@ ImageName=#@#Images\core8.png
 X=(366*#scaleX#)
 Y=(141*#scaleY#)
 H=(92*#scaleY#+2)
-Grayscale=#Comet_Grayscale#
+MeterStyle=CometImageStyle[#CPU_Mode]
 LeftMouseUpAction=[!ToggleMeterGroup Core8][!Redraw]
 LeftMouseDoubleClickAction=["C:\Program Files\Intel\Intel(R) Extreme Tuning Utility\Client\XtuUILauncher.exe"]
 ToolTipTitle=Core 8

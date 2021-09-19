@@ -23,7 +23,8 @@ HWiNFO-Core8-T0-Usage=0x7000010
 HWiNFO-Core8-T1-Usage=0x7000011
 HWiNFO-Core9-T0-Usage=0x7000012
 HWiNFO-Core9-T1-Usage=0x7000013
-HWiNFO-CPU-Usage=0x7002714
+HWiNFO-CPU-Usage=0x7000015
+HWiNFO-Core-Usage=0x7002714
 
 ; CPU DTS
 HWiNFO-CPU-DTS-SensorId=0xf0000400
@@ -58,6 +59,7 @@ HWiNFO-CPU-Enhanced-SensorId=0xf0002a00
 HWiNFO-CPU-Enhanced-SensorInstance=0x0
 HWiNFO-IA-Enhanced-Temp=0x1000005
 HWiNFO-IG-Enhanced-Temp=0x1000006
+HWiNFO-GT-Enhanced-Usage=0x7000002
 
 ; PCH (Northbridge)
 HWiNFO-PCH-SensorId=0xf2010001

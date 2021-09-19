@@ -16,26 +16,9 @@ HWiNFOSensorId=#HWiNFO-CPU-DTS-SensorId#
 HWiNFOSensorInstance=#HWiNFO-CPU-DTS-SensorInstance#
 HWiNFOEntryId=#HWiNFO-CPU-DTS-Throttle#
 HWiNFOType=CurrentValue
-HWiNFOLogHandler=1
+HWiNFOLogHandler=2
 MinValue=0
 MaxValue=1
-
-[CpuTemp]
-Measure=Plugin
-Plugin=HWiNFO.dll
-HWiNFOSensorId=#HWiNFO-CPU-DTS-SensorId#
-HWiNFOSensorInstance=#HWiNFO-CPU-DTS-SensorInstance#
-HWiNFOEntryId=#HWiNFO-CPU-DTS-Package#
-HWiNFOType=CurrentValue
-HWiNFOLogHandler=1
-MinValue=0
-MaxValue=100
-
-IfConditionMode=1
-IfCondition=(#CPU_Mode# = 1) && (CpuTemp > #CPU_NormTemp#)
-IfTrueAction=!SetOption CpuImage ImageTint "(#Comet_Brightness#*(([CpuTemp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), (#Comet_Brightness#*(1-([CpuTemp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), 0, #Comet_Transparency#"
-IfCondition2=(#CPU_Mode# = 1) && (CpuTemp <= #CPU_NormTemp#)
-IfTrueAction2=!SetOption CpuImage ImageTint "0, #Comet_Brightness#, 0, #Comet_Transparency#"
 
 [CpuUsage]
 Measure=Plugin
@@ -44,9 +27,34 @@ HWiNFOSensorId=#HWiNFO-CPU-SensorId#
 HWiNFOSensorInstance=#HWiNFO-CPU-SensorInstance#
 HWiNFOEntryId=#HWiNFO-CPU-Usage#
 HWiNFOType=CurrentValue
-HWiNFOLogHandler=2
+HWiNFOLogHandler=3
 MinValue=0
 MaxValue=100
+
+IfConditionMode=1
+IfCondition=#CPU_Mode# = 2
+IfTrueAction=[!SetOption CpuImage ColorMatrix1 "([CpuUsage]/100);0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;([CpuUsage]/100);0;0;0"][!SetOption CpuImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption NorthBridgeImage ColorMatrix1 "([CpuUsage]/100);0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;([CpuUsage]/100);0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"]
+
+[CpuTemp]
+Measure=Plugin
+Plugin=HWiNFO.dll
+HWiNFOSensorId=#HWiNFO-CPU-DTS-SensorId#
+HWiNFOSensorInstance=#HWiNFO-CPU-DTS-SensorInstance#
+HWiNFOEntryId=#HWiNFO-CPU-DTS-Package#
+HWiNFOType=CurrentValue
+HWiNFOLogHandler=3
+MinValue=0
+MaxValue=100
+
+IfConditionMode=1
+IfCondition=(#CPU_Mode# = 1) && (CpuTemp > #CPU_NormTemp#)
+IfTrueAction=[!SetOption CpuImage ColorMatrix1 "(([CpuTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;(1-([CpuTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"]
+IfCondition2=(#CPU_Mode# = 1) && (CpuTemp <= #CPU_NormTemp#)
+IfTrueAction2=[!SetOption CpuImage ColorMatrix1 "0;0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;1;0;0;0"]
+IfCondition3=(#CPU_Mode# = 3) && (CpuTemp > #CPU_NormTemp#)
+IfTrueAction3=[!SetOption CpuImage ColorMatrix1 "(([CpuTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;(1-([CpuTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption CpuImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption CpuImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
+IfCondition4=(#CPU_Mode# = 3) && (CpuTemp <= #CPU_NormTemp#)
+IfTrueAction4=[!SetOption CpuImage ColorMatrix1 "0;0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;1;0;0;0"][!SetOption CpuImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption CpuImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
 
 [CpuRAM]
 Measure=PhysicalMemory
@@ -63,15 +71,19 @@ HWiNFOSensorId=#HWiNFO-CPU-Enhanced-SensorId#
 HWiNFOSensorInstance=#HWiNFO-CPU-Enhanced-SensorInstance#
 HWiNFOEntryId=#HWiNFO-IA-Enhanced-Temp#
 HWiNFOType=CurrentValue
-HWiNFOLogHandler=1
+HWiNFOLogHandler=2
 MinValue=0
 MaxValue=100
 
 IfConditionMode=1
 IfCondition=(#CPU_Mode# = 1) && (NorthBridgeTemp > #CPU_NormTemp#)
-IfTrueAction=!SetOption NorthBridgeImage ImageTint "(#Comet_Brightness#*(([NorthBridgeTemp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), (#Comet_Brightness#*(1-([NorthBridgeTemp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), 0, #Comet_Transparency#"
+IfTrueAction=[!SetOption NorthBridgeImage ColorMatrix1 "(([NorthBridgeTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;(1-([NorthBridgeTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"]
 IfCondition2=(#CPU_Mode# = 1) && (NorthBridgeTemp <= #CPU_NormTemp#)
-IfTrueAction2=!SetOption NorthBridgeImage ImageTint "0, #Comet_Brightness#, 0, #Comet_Transparency#"
+IfTrueAction2=[!SetOption NorthBridgeImage ColorMatrix1 "0;0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;1;0;0;0"]
+IfCondition3=(#CPU_Mode# = 3) && (NorthBridgeTemp > #CPU_NormTemp#)
+IfTrueAction3=[!SetOption NorthBridgeImage ColorMatrix1 "(([NorthBridgeTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;(1-([NorthBridgeTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption NorthBridgeImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
+IfCondition4=(#CPU_Mode# = 3) && (NorthBridgeTemp <= #CPU_NormTemp#)
+IfTrueAction4=[!SetOption NorthBridgeImage ColorMatrix1 "0;0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;1;0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption NorthBridgeImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
 
 ; Ringbus Interconnect
 
@@ -82,9 +94,24 @@ HWiNFOSensorId=#HWiNFO-CPU-DTS-SensorId#
 HWiNFOSensorInstance=#HWiNFO-CPU-DTS-SensorInstance#
 HWiNFOEntryId=#HWiNFO-Ring-DTS-Throttle#
 HWiNFOType=CurrentValue
-HWiNFOLogHandler=1
+HWiNFOLogHandler=2
 MinValue=0
 MaxValue=1
+
+[RingUsage]
+Measure=Plugin
+Plugin=HWiNFO.dll
+HWiNFOSensorId=#HWiNFO-CPU-SensorId#
+HWiNFOSensorInstance=#HWiNFO-CPU-SensorInstance#
+HWiNFOEntryId=#HWiNFO-Core-Usage#
+HWiNFOType=CurrentValue
+HWiNFOLogHandler=3
+MinValue=0
+MaxValue=100
+
+IfConditionMode=1
+IfCondition=#CPU_Mode# = 2
+IfTrueAction=[!SetOption RingImage ColorMatrix1 "([RingUsage]/100);0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;([RingUsage]/100);0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;([RingUsage]/100);0;0"]
 
 [RingTemp]
 Measure=Plugin
@@ -93,17 +120,36 @@ HWiNFOSensorId=#HWiNFO-CPU-DTS-SensorId#
 HWiNFOSensorInstance=#HWiNFO-CPU-DTS-SensorInstance#
 HWiNFOEntryId=#HWiNFO-CPU-DTS-CoreMax#
 HWiNFOType=CurrentValue
-HWiNFOLogHandler=1
+HWiNFOLogHandler=2
 MinValue=0
 MaxValue=100
 
 IfConditionMode=1
 IfCondition=(#CPU_Mode# = 1) && (RingTemp > #CPU_NormTemp#)
-IfTrueAction=!SetOption RingImage ImageTint "(#Comet_Brightness#*(([RingTemp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), (#Comet_Brightness#*(1-([RingTemp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), 0, #Comet_Transparency#"
+IfTrueAction=[!SetOption RingImage ColorMatrix1 "(([RingTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;(1-([RingTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"]
 IfCondition2=(#CPU_Mode# = 1) && (RingTemp <= #CPU_NormTemp#)
-IfTrueAction2=!SetOption RingImage ImageTint "0, #Comet_Brightness#, 0, #Comet_Transparency#"
+IfTrueAction2=[!SetOption RingImage ColorMatrix1 "0;0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;1;0;0;0"]
+IfCondition3=(#CPU_Mode# = 3) && (RingTemp > #CPU_NormTemp#)
+IfTrueAction3=[!SetOption RingImage ColorMatrix1 "(([RingTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;(1-([RingTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;([RingUsage]/100);0;0"][!SetOption RingImage ColorMatrix5 "(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);0;1"]
+IfCondition4=(#CPU_Mode# = 3) && (RingTemp <= #CPU_NormTemp#)
+IfTrueAction4=[!SetOption RingImage ColorMatrix1 "0;0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;1;0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;([RingUsage]/100);0;0"][!SetOption RingImage ColorMatrix5 "(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);0;1"]
 
 ; Integrated Graphics
+
+[IGUsage]
+Measure=Plugin
+Plugin=HWiNFO.dll
+HWiNFOSensorId=#HWiNFO-CPU-Enhanced-SensorId#
+HWiNFOSensorInstance=#HWiNFO-CPU-Enhanced-SensorInstance#
+HWiNFOEntryId=#HWiNFO-GT-Enhanced-Usage#
+HWiNFOType=CurrentValue
+HWiNFOLogHandler=2
+MinValue=0
+MaxValue=100
+
+IfConditionMode=1
+IfCondition=#CPU_Mode# = 2
+IfTrueAction=[!SetOption IGImage ColorMatrix1 "([IGUsage]/100);0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;([IGUsage]/100);0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;([IGUsage]/100);0;0"]
 
 [IGTemp]
 Measure=Plugin
@@ -112,15 +158,19 @@ HWiNFOSensorId=#HWiNFO-CPU-Enhanced-SensorId#
 HWiNFOSensorInstance=#HWiNFO-CPU-Enhanced-SensorInstance#
 HWiNFOEntryId=#HWiNFO-IG-Enhanced-Temp#
 HWiNFOType=CurrentValue
-HWiNFOLogHandler=1
+HWiNFOLogHandler=2
 MinValue=0
 MaxValue=100
 
 IfConditionMode=1
 IfCondition=(#CPU_Mode# = 1) && (IGTemp > #CPU_NormTemp#)
-IfTrueAction=!SetOption IGImage ImageTint "(#Comet_Brightness#*(([IGTemp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), (#Comet_Brightness#*(1-([IGTemp]-#CPU_NormTemp#)/(#CPU_MaxTemp#-#CPU_NormTemp#))), 0, #Comet_Transparency#"
+IfTrueAction=[!SetOption IGImage ColorMatrix1 "(([IGTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;(1-([IGTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"]
 IfCondition2=(#CPU_Mode# = 1) && (IGTemp <= #CPU_NormTemp#)
-IfTrueAction2=!SetOption IGImage ImageTint "0, #Comet_Brightness#, 0, #Comet_Transparency#"
+IfTrueAction2=[!SetOption IGImage ColorMatrix1 "0;0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;1;0;0;0"]
+IfCondition3=(#CPU_Mode# = 3) && (IGTemp > #CPU_NormTemp#)
+IfTrueAction3=[!SetOption IGImage ColorMatrix1 "(([IGTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;(1-([IGTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;([IGUsage]/100);0;0"][!SetOption IGImage ColorMatrix5 "(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);0;1"]
+IfCondition4=(#CPU_Mode# = 3) && (IGTemp <= #CPU_NormTemp#)
+IfTrueAction4=[!SetOption IGImage ColorMatrix1 "0;0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;1;0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;([IGUsage]/100);0;0"][!SetOption IGImage ColorMatrix5 "(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);0;1"]
 
 ; -------------------------------------- Image -------------------------------------------
 
@@ -130,7 +180,7 @@ ImageName=#@#Images\cpu.png
 X=0
 Y=0
 H=#dispY#
-Grayscale=#Comet_Grayscale#
+MeterStyle=CometImageStyle#Cpu_Mode#
 LeftMouseUpAction=[!ToggleMeterGroup CPU][!Redraw]
 ToolTipTitle=CPU
 ToolTipType=0
@@ -142,7 +192,7 @@ ImageName=#@#Images\northbridge.png
 X=(4*#scaleX#+1)
 Y=(20*#scaleY#)
 H=(213*#scaleY#+2)
-Grayscale=#Comet_Grayscale#
+MeterStyle=CometImageStyle#Cpu_Mode#
 LeftMouseUpAction=[!ToggleGroup Disks][!Redraw]
 ToolTipTitle=Northbridge
 ToolTipType=0
@@ -154,7 +204,7 @@ ImageName=#@#Images\ring.png
 X=(65*#scaleX#)
 Y=(115*#scaleY#+1)
 H=(26*#scaleY#+1)
-Grayscale=#Comet_Grayscale#
+MeterStyle=CometImageStyle#Cpu_Mode#
 LeftMouseDoubleClickAction=["C:\Program Files\Intel\Intel(R) Extreme Tuning Utility\Client\XtuUILauncher.exe"]
 ToolTipTitle=Ringbus Interconnect
 ToolTipType=0
@@ -166,7 +216,7 @@ ImageName=#@#Images\ig.png
 X=(431*#scaleX#)
 Y=(21*#scaleY#)
 H=(214*#scaleY#+1)
-Grayscale=#Comet_Grayscale#
+MeterStyle=CometImageStyle#Cpu_Mode#
 LeftMouseUpAction=[!ToggleGroup GPUs][!Redraw]
 LeftMouseDoubleClickAction=["C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"]
 ToolTipTitle=Integrated Graphics
