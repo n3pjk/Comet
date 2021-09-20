@@ -5,7 +5,7 @@
 ; 1 = Thermal
 ; 2 = Usage
 ; 3 = Both
-CPU_Mode=1
+CPU_Mode=3
 DisableUpdateNag=0
 CPU_MaxTemp=100
 CPU_TvbTemp=70

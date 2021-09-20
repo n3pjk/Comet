@@ -33,7 +33,7 @@ MaxValue=100
 
 IfConditionMode=1
 IfCondition=#CPU_Mode# = 2
-IfTrueAction=[!SetOption CpuImage ColorMatrix1 "([CpuUsage]/100);0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;([CpuUsage]/100);0;0;0"][!SetOption CpuImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption NorthBridgeImage ColorMatrix1 "([CpuUsage]/100);0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;([CpuUsage]/100);0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"]
+IfTrueAction=[!SetOption CpuImage ColorMatrix1 "(1-(1-[CpuUsage]/100)**2);0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;(1-(1-[CpuUsage]/100)**2);0;0;0"][!SetOption CpuImage ColorMatrix3 "0;0;(1-(1-[CpuUsage]/100)**2);0;0"][!SetOption NorthBridgeImage ColorMatrix1 "(1-(1-[CpuUsage]/100)**2);0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;(1-(1-[CpuUsage]/100)**2);0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;(1-(1-[CpuUsage]/100)**2);0;0"]
 
 [CpuTemp]
 Measure=Plugin
@@ -54,7 +54,7 @@ IfTrueAction2=[!SetOption CpuImage ColorMatrix1 "0;0;0;0;0"][!SetOption CpuImage
 IfCondition3=(#CPU_Mode# = 3) && (CpuTemp > #CPU_NormTemp#)
 IfTrueAction3=[!SetOption CpuImage ColorMatrix1 "(([CpuTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;(1-([CpuTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption CpuImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption CpuImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
 IfCondition4=(#CPU_Mode# = 3) && (CpuTemp <= #CPU_NormTemp#)
-IfTrueAction4=[!SetOption CpuImage ColorMatrix1 "0;0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;1;0;0;0"][!SetOption CpuImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption CpuImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
+IfTrueAction4=[!SetOption CpuImage ColorMatrix1 "0;0;0;0;0"][!SetOption CpuImage ColorMatrix2 "0;1;0;0;0"][!SetOption CpuImage ColorMatrix3 "0;0;(1-(1-[CpuUsage]/100)**2);0;0"][!SetOption CpuImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
 
 [CpuRAM]
 Measure=PhysicalMemory
@@ -81,9 +81,9 @@ IfTrueAction=[!SetOption NorthBridgeImage ColorMatrix1 "(([NorthBridgeTemp]-[#CP
 IfCondition2=(#CPU_Mode# = 1) && (NorthBridgeTemp <= #CPU_NormTemp#)
 IfTrueAction2=[!SetOption NorthBridgeImage ColorMatrix1 "0;0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;1;0;0;0"]
 IfCondition3=(#CPU_Mode# = 3) && (NorthBridgeTemp > #CPU_NormTemp#)
-IfTrueAction3=[!SetOption NorthBridgeImage ColorMatrix1 "(([NorthBridgeTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;(1-([NorthBridgeTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption NorthBridgeImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
+IfTrueAction3=[!SetOption NorthBridgeImage ColorMatrix1 "(([NorthBridgeTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;(1-([NorthBridgeTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;(1-(1-[CpuUsage]/100)**2);0;0"][!SetOption NorthBridgeImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
 IfCondition4=(#CPU_Mode# = 3) && (NorthBridgeTemp <= #CPU_NormTemp#)
-IfTrueAction4=[!SetOption NorthBridgeImage ColorMatrix1 "0;0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;1;0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;([CpuUsage]/100);0;0"][!SetOption NorthBridgeImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
+IfTrueAction4=[!SetOption NorthBridgeImage ColorMatrix1 "0;0;0;0;0"][!SetOption NorthBridgeImage ColorMatrix2 "0;1;0;0;0"][!SetOption NorthBridgeImage ColorMatrix3 "0;0;(1-(1-[CpuUsage]/100)**2);0;0"][!SetOption NorthBridgeImage ColorMatrix5 "(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);(0.125*[CpuUsage]/100);0;1"]
 
 ; Ringbus Interconnect
 
@@ -111,7 +111,7 @@ MaxValue=100
 
 IfConditionMode=1
 IfCondition=#CPU_Mode# = 2
-IfTrueAction=[!SetOption RingImage ColorMatrix1 "([RingUsage]/100);0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;([RingUsage]/100);0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;([RingUsage]/100);0;0"]
+IfTrueAction=[!SetOption RingImage ColorMatrix1 "(1-(1-[RingUsage]/100)**2);0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;(1-(1-[RingUsage]/100)**2);0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;(1-(1-[RingUsage]/100)**2);0;0"]
 
 [RingTemp]
 Measure=Plugin
@@ -130,9 +130,9 @@ IfTrueAction=[!SetOption RingImage ColorMatrix1 "(([RingTemp]-[#CPU_NormTemp])/[
 IfCondition2=(#CPU_Mode# = 1) && (RingTemp <= #CPU_NormTemp#)
 IfTrueAction2=[!SetOption RingImage ColorMatrix1 "0;0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;1;0;0;0"]
 IfCondition3=(#CPU_Mode# = 3) && (RingTemp > #CPU_NormTemp#)
-IfTrueAction3=[!SetOption RingImage ColorMatrix1 "(([RingTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;(1-([RingTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;([RingUsage]/100);0;0"][!SetOption RingImage ColorMatrix5 "(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);0;1"]
+IfTrueAction3=[!SetOption RingImage ColorMatrix1 "(([RingTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;(1-([RingTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;(1-(1-[RingUsage]/100)**2);0;0"][!SetOption RingImage ColorMatrix5 "(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);0;1"]
 IfCondition4=(#CPU_Mode# = 3) && (RingTemp <= #CPU_NormTemp#)
-IfTrueAction4=[!SetOption RingImage ColorMatrix1 "0;0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;1;0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;([RingUsage]/100);0;0"][!SetOption RingImage ColorMatrix5 "(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);0;1"]
+IfTrueAction4=[!SetOption RingImage ColorMatrix1 "0;0;0;0;0"][!SetOption RingImage ColorMatrix2 "0;1;0;0;0"][!SetOption RingImage ColorMatrix3 "0;0;(1-(1-[RingUsage]/100)**2);0;0"][!SetOption RingImage ColorMatrix5 "(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);(0.125*[RingUsage]/100);0;1"]
 
 ; Integrated Graphics
 
@@ -149,7 +149,7 @@ MaxValue=100
 
 IfConditionMode=1
 IfCondition=#CPU_Mode# = 2
-IfTrueAction=[!SetOption IGImage ColorMatrix1 "([IGUsage]/100);0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;([IGUsage]/100);0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;([IGUsage]/100);0;0"]
+IfTrueAction=[!SetOption IGImage ColorMatrix1 "(1-(1-[IGUsage]/100)**2);0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;(1-(1-[IGUsage]/100)**2);0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;(1-(1-[IGUsage]/100)**2);0;0"]
 
 [IGTemp]
 Measure=Plugin
@@ -168,9 +168,9 @@ IfTrueAction=[!SetOption IGImage ColorMatrix1 "(([IGTemp]-[#CPU_NormTemp])/[#CPU
 IfCondition2=(#CPU_Mode# = 1) && (IGTemp <= #CPU_NormTemp#)
 IfTrueAction2=[!SetOption IGImage ColorMatrix1 "0;0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;1;0;0;0"]
 IfCondition3=(#CPU_Mode# = 3) && (IGTemp > #CPU_NormTemp#)
-IfTrueAction3=[!SetOption IGImage ColorMatrix1 "(([IGTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;(1-([IGTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;([IGUsage]/100);0;0"][!SetOption IGImage ColorMatrix5 "(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);0;1"]
+IfTrueAction3=[!SetOption IGImage ColorMatrix1 "(([IGTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;(1-([IGTemp]-[#CPU_NormTemp])/[#CPU_TempRange]);0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;(1-(1-[IGUsage]/100)**2);0;0"][!SetOption IGImage ColorMatrix5 "(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);0;1"]
 IfCondition4=(#CPU_Mode# = 3) && (IGTemp <= #CPU_NormTemp#)
-IfTrueAction4=[!SetOption IGImage ColorMatrix1 "0;0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;1;0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;([IGUsage]/100);0;0"][!SetOption IGImage ColorMatrix5 "(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);0;1"]
+IfTrueAction4=[!SetOption IGImage ColorMatrix1 "0;0;0;0;0"][!SetOption IGImage ColorMatrix2 "0;1;0;0;0"][!SetOption IGImage ColorMatrix3 "0;0;(1-(1-[IGUsage]/100)**2);0;0"][!SetOption IGImage ColorMatrix5 "(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);(0.125*[IGUsage]/100);0;1"]
 
 ; -------------------------------------- Image -------------------------------------------
 

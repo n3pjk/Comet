@@ -54,9 +54,9 @@ Formula=(Core0T0Usage+Core0T1Usage)/2
 
 IfConditionMode=1
 IfCondition=#CPU_Mode# = 2
-IfTrueAction=[!SetOption Core0Image ColorMatrix1 "([Core0Usage]/100);0;0;0;0"][!SetOption Core0Image ColorMatrix2 "0;([Core0Usage]/100);0;0;0"][!SetOption Core0Image ColorMatrix3 "0;0;([Core0Usage]/100);0;0"]
+IfTrueAction=[!SetOption Core0Image ColorMatrix1 "(1-(1-[Core0Usage]/100)**2);0;0;0;0"][!SetOption Core0Image ColorMatrix2 "0;(1-(1-[Core0Usage]/100)**2);0;0;0"][!SetOption Core0Image ColorMatrix3 "0;0;(1-(1-[Core0Usage]/100)**2);0;0"]
 IfCondition2=#CPU_Mode# = 3
-IfTrueAction2=[!SetOption Core0Image ColorMatrix3 "0;0;([Core0Usage]/100);0;0"][!SetOption Core0Image ColorMatrix5 "(0.125*[Core0Usage]/100);(0.125*[Core0Usage]/100);(0.125*[Core0Usage]/100);0;1"]
+IfTrueAction2=[!SetOption Core0Image ColorMatrix3 "0;0;(1-(1-[Core0Usage]/100)**2);0;0"][!SetOption Core0Image ColorMatrix5 "(0.125*[Core0Usage]/100);(0.125*[Core0Usage]/100);(0.125*[Core0Usage]/100);0;1"]
 
 ; -------------------------------------- Image -------------------------------------------
 

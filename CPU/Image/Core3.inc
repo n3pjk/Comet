@@ -54,10 +54,9 @@ Formula=(Core3T0Usage+Core3T1Usage)/2
 
 IfConditionMode=1
 IfCondition=#CPU_Mode# = 2
-IfTrueAction=[!SetOption Core3Image ColorMatrix1 "([Core3Usage]/100);0;0;0;0"][!SetOption Core3Image ColorMatrix2 "0;([Core3Usage]/100);0;0;0"][!SetOption Core3Image ColorMatrix3 "0;0;([Core3Usage]/100);0;0"]
-;[!SetOption Core3Image ColorMatrix5 "(0.25*[Core3Usage]/100);(0.25*[Core3Usage]/100);(0.25*[Core3Usage])/100);0;1"]
+IfTrueAction=[!SetOption Core3Image ColorMatrix1 "(1-(1-[Core3Usage]/100)**2);0;0;0;0"][!SetOption Core3Image ColorMatrix2 "0;(1-(1-[Core3Usage]/100)**2);0;0;0"][!SetOption Core3Image ColorMatrix3 "0;0;(1-(1-[Core3Usage]/100)**2);0;0"]
 IfCondition2=#CPU_Mode# = 3
-IfTrueAction2=[!SetOption Core3Image ColorMatrix3 "0;0;([Core3Usage]/100);0;0"][!SetOption Core3Image ColorMatrix5 "(0.125*[Core3Usage]/100);(0.125*[Core3Usage]/100);(0.125*[Core3Usage]/100);0;1"]
+IfTrueAction2=[!SetOption Core3Image ColorMatrix3 "0;0;(1-(1-[Core3Usage]/100)**2);0;0"][!SetOption Core3Image ColorMatrix5 "(0.125*[Core3Usage]/100);(0.125*[Core3Usage]/100);(0.125*[Core3Usage]/100);0;1"]
 
 ; -------------------------------------- Image -------------------------------------------
 
